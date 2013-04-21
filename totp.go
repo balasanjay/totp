@@ -85,8 +85,7 @@ var digit_power = []int64{
 }
 
 // Authenticate verifies the TOTP userCode taking the key from secretKey and
-// other options from o, the provided Options. If o is nil, then
-// DefaultOptions is used instead.
+// other options from o. If o is nil, then DefaultOptions is used instead.
 func Authenticate(secretKey []byte, userCode string, o *Options) bool {
 	if o == nil {
 		o = DefaultOptions
