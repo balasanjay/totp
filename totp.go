@@ -1,3 +1,6 @@
+// Package totp implements the Time-Based One-Time Password Algorithm,
+// specified in RFC 6238. It allows clients to implement Two-Factor
+// Authentication, and interoperates with Google Authenticator.
 package totp
 
 import (
