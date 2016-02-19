@@ -4,7 +4,6 @@
 package totp
 
 import (
-	"code.google.com/p/rsc/qr"
 	"crypto/hmac"
 	"crypto/sha1"
 	"encoding/base32"
@@ -13,6 +12,11 @@ import (
 	"net/url"
 	"strconv"
 	"time"
+
+	"bytes"
+	"image/png"
+
+	qr "github.com/qpliu/qrencode-go/qrencode"
 )
 
 // BarcodeImage creates a QR code for use with Google Authenticator (GA).
@@ -38,13 +42,21 @@ func BarcodeImage(label string, secretkey []byte, opt *Options) ([]byte, error) 
 
 	u.RawQuery = params.Encode()
 
-	c, err := qr.Encode(u.String(), qr.M)
+	c, err := qr.Encode(u.String(), qr.ECLevelM)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return c.PNG(), nil
+	var buf bytes.Buffer
+
+	err = png.Encode(&buf, c.Image(8))
+
+	if err != nil {
+		return nil, err
+	}
+
+	return buf.Bytes(), nil
 }
 
 // Options contains the different configurable values for a given TOTP
