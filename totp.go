@@ -48,9 +48,15 @@ func BarcodeImage(label string, secretkey []byte, opt *Options) ([]byte, error) 
 		return nil, err
 	}
 
-	buf := bytes.NewBuffer([]byte{})
-	err = png.Encode(buf, c.Image(8))
-	return buf.Bytes(), err
+	var buf bytes.Buffer
+
+	err = png.Encode(&buf, c.Image(8))
+
+	if err != nil {
+		return nil, err
+	}
+
+	return buf.Bytes(), nil
 }
 
 // Options contains the different configurable values for a given TOTP
