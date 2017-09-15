@@ -17,6 +17,7 @@ import (
 	"image/png"
 
 	qr "github.com/qpliu/qrencode-go/qrencode"
+	"strings"
 )
 
 // BarcodeImage creates a QR code for use with Google Authenticator (GA).
@@ -35,7 +36,7 @@ func BarcodeImage(label string, secretkey []byte, opt *Options) ([]byte, error) 
 	}
 
 	params := url.Values{
-		"secret": {base32.StdEncoding.EncodeToString(secretkey)},
+		"secret": {strings.TrimRight(base32.StdEncoding.EncodeToString(secretkey), "=")},
 		"digits": {strconv.Itoa(int(opt.Digits))},
 		"period": {strconv.Itoa(int(opt.TimeStep / time.Second))},
 	}
